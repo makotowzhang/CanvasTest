@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas height="500" width="500" id="cabk"></canvas>
+    <canvas height="500" width="500" id="ca"></canvas>
+</body>
+
+</html>
+<script>
+    var Direction = {
+        Down: 0,
+        Left: 1,
+        Right: 2,
+        Up: 3
+    };
+    var keyCode = {
+        87: "top",
+        65: "left",
+        83: "down",
+        68: "right",
+        74: "fire"
+    }
+    var moveData = {
+        isMoving: false,
+        moveKey: 0,
+        defaultMove: false
+    };
+</script>
+<script>
+    var img = new Image();
+    img.src = "image/Actor.png";
+    var can = document.getElementById("ca");
+    var ctx = can.getContext("2d");
+    var ctxbk = document.getElementById("cabk").getContext("2d")
+    var actor = {
+        x: 0,
+        y: 0,
+        direction: Direction.Down,
+        imgDirection: Direction.Down,
+        imgIndex: 1
+    };
+    var actorAnime = [{
+        x: 0,
+        y: 192,
+    },
+    {
+        x: 48,
+        y: 192,
+    },
+    {
+        x: 96,
+        y: 192,
+    }];
+    function paint() {
+        ctx.clearRect(0, 0, 500, 500);
+        ctx.drawImage(img, actorAnime[actor.imgIndex].x, actorAnime[actor.imgIndex].y + (48 * actor.imgDirection), 48, 48, actor.x, actor.y, 48, 48);
+    }
+    setInterval(paint, 10);
+    setInterval(function () {
+        if (moveData.moveKey != 0 && !moveData.isMoving) {
+            move(null, actor.direction);
+        }
+    }, 1);
+
+    function move(movelift, dir, setDefault) {
+        if (movelift == null) {
+            actor.imgDirection = dir;
+            moveData.isMoving = true;
+            movelift = 48;
+        }
+        if (0 < movelift && movelift <= 24) {
+            actor.imgIndex = 2;
+        }
+        if (24 < movelift && movelift <= 48) {
+            actor.imgIndex = 0;
+        }
+        if (movelift == 0) {
+            actor.imgIndex = 1;
+            moveData.isMoving = false;
+            if (setDefault) {
+                moveData.defaultMove = false;
+            }
+            return;
+        }
+        if (dir == Direction.Right) {
+            actor.x += 1;
+        }
+        if (dir == Direction.Left) {
+            actor.x -= 1;
+        }
+        if (dir == Direction.Down) {
+            actor.y += 1;
+        }
+        if (dir == Direction.Up) {
+            actor.y -= 1;
+        }
+        movelift -= 1;
+        setTimeout(function () {
+            move(movelift, dir, setDefault);
+        }, 0);
+    }
+</script>
+<script>
+    document.onkeydown = function (ev) {
+        if (ev.keyCode == 83) {
+            actor.direction = Direction.Down;
+            moveData.moveKey = ev.keyCode;
+        }
+        if (ev.keyCode == 65) {
+            actor.direction = Direction.Left;
+            moveData.moveKey = ev.keyCode;
+        }
+        if (ev.keyCode == 68) {
+            actor.direction = Direction.Right;
+            moveData.moveKey = ev.keyCode;
+        }
+        if (ev.keyCode == 87) {
+            actor.direction = Direction.Up;
+            moveData.moveKey = ev.keyCode;
+        }
+    }
+    document.onkeyup = function (ev) {
+        if (ev.keyCode == moveData.moveKey) {
+            moveData.moveKey = 0;
+        }
+    }
+    var back = new Image();
+    back.src = "image/Outside_A2.png";
+    back.onload = function () {
+        for (var i = 0; i < 404; i = i + 96) {
+            for (var j = 0; j < 404; j = j + 96) {
+                ctxbk.drawImage(back, 0, 0, 96, 96, i, j, 96, 96);
+            }
+        }
+    };
+
+</script>
