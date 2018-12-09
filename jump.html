@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            position: absolute;
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas height="500" width="500" id="cabk"></canvas>
+    <canvas height="500" width="500" id="ca"></canvas>
+</body>
+
+</html>
+<script>
+    var ctx = document.getElementById("ca").getContext("2d");
+    var ctxbk = document.getElementById("cabk").getContext("2d");
+    for (var i = -500; i < 500; i += 100) {
+        ctx.moveTo(i, 0);
+        ctx.lineTo(500+i, 500);
+        ctx.stroke();
+    }
+    for (var i = 0; i < 1000; i += 100) {
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i-500, 500);
+        ctx.stroke();
+    }
+
+</script>
+<script>
+</script>
+<script>
+</script>
