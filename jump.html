@@ -26,9 +26,9 @@
 <script>
     var ctx = document.getElementById("ca").getContext("2d");
     var ctxbk = document.getElementById("cabk").getContext("2d");
-    for (var i = -500; i < 500; i += 100) {
-        ctx.moveTo(i, 0);
-        ctx.lineTo(500+i, 500);
+    for (var i = 0; i < 1000; i += 100) {
+        ctx.moveTo(0, i);
+        ctx.lineTo((500+i)/0.576, 500);
         ctx.stroke();
     }
     for (var i = 0; i < 1000; i += 100) {
