@@ -44,10 +44,36 @@
 </script>
 <script>
     var breathImg = new Image();
-    breathImg.src = "image/Darkness1.png";
+    breathImg.src = "image/Breath.png";
+    var actor = {
+        x: 0,
+        y: 0,
+        direction: Direction.Down,
+        imgDirection: Direction.Down,
+        imgIndex: 1
+    }
     var breath={
-        x:250,
-        y:250,
+        x:function(){
+            if(actor.direction== Direction.Right)
+            return actor.x+48;
+            if(actor.direction== Direction.Down)
+            return actor.x-72;
+            if(actor.direction== Direction.Up)
+            return actor.x-72;
+            if(actor.direction== Direction.Left)
+            return actor.x-192;
+        },
+        y:function(){
+            if(actor.direction== Direction.Right)
+            return actor.y-72;
+            if(actor.direction== Direction.Down)
+            return actor.y+48;
+            if(actor.direction== Direction.Up)
+            return actor.y-192;
+            if(actor.direction== Direction.Left)
+            return actor.y-72;
+           
+        },
         imgHang:0,
         imgLie:0
     };
@@ -67,23 +93,17 @@
     img.src = "image/Actor.png";
     var ctx =  document.getElementById("ca").getContext("2d");
     var ctxbk = document.getElementById("cabk").getContext("2d")
-    var actor = {
-        x: 0,
-        y: 0,
-        direction: Direction.Down,
-        imgDirection: Direction.Down,
-        imgIndex: 1
-    }
+   
     var actorAnime = [{
-        x: 0,
+        x: 144,
         y: 192,
     },
     {
-        x: 48,
+        x: 192,
         y: 192,
     },
     {
-        x: 96,
+        x: 240,
         y: 192,
     }];
     // var alpha=0.1;
@@ -103,7 +123,7 @@
         ctx.clearRect(0, 0, 500, 500);
       
         ctx.drawImage(img, actorAnime[actor.imgIndex].x, actorAnime[actor.imgIndex].y + (48 * actor.imgDirection), 48, 48, actor.x, actor.y, 48, 48);
-        ctx.drawImage(breathImg, breath.imgLie*192, breath.imgHang*192, 192, 192, breath.x, breath.y, 192, 192);
+        ctx.drawImage(breathImg, breath.imgLie*192, breath.imgHang*192, 192, 192, breath.x(), breath.y(), 192, 192);
 
         // ctx.fillStyle = 'rgba(255,255,255,'+alpha.toString()+')';
         // ctx.fillRect(0,0,500,500);
