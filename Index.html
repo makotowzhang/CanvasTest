@@ -17,8 +17,8 @@
 </head>
 
 <body>
-    <canvas height="500" width="500" id="cabk"></canvas>
-    <canvas height="500" width="500" id="ca"></canvas>
+    <canvas height="480" width="480" id="cabk"></canvas>
+    <canvas height="480" width="480" id="ca"></canvas>
 </body>
 
 </html>
@@ -43,10 +43,29 @@
     };
 </script>
 <script>
+    var breathImg = new Image();
+    breathImg.src = "image/Darkness1.png";
+    var breath={
+        x:250,
+        y:250,
+        imgHang:0,
+        imgLie:0
+    };
+    setInterval(function(){
+        breath.imgLie++;
+        if(breath.imgLie==5){
+            breath.imgLie=0;
+            breath.imgHang++;
+        }
+        if(breath.imgHang==3){
+            breath.imgHang=0;
+        }
+    },100);
+</script>
+<script>
     var img = new Image();
     img.src = "image/Actor.png";
-    var can = document.getElementById("ca");
-    var ctx = can.getContext("2d");
+    var ctx =  document.getElementById("ca").getContext("2d");
     var ctxbk = document.getElementById("cabk").getContext("2d")
     var actor = {
         x: 0,
@@ -54,7 +73,7 @@
         direction: Direction.Down,
         imgDirection: Direction.Down,
         imgIndex: 1
-    };
+    }
     var actorAnime = [{
         x: 0,
         y: 192,
@@ -67,9 +86,29 @@
         x: 96,
         y: 192,
     }];
+    // var alpha=0.1;
+    // var step=0.01;
     function paint() {
+      
+       
+       
+      
+       
+        // if(alpha<=0.1){
+        //     step=0.03;
+        // }
+        // else if(alpha>=0.9){
+        //     step=-0.03;
+        // }
         ctx.clearRect(0, 0, 500, 500);
+      
         ctx.drawImage(img, actorAnime[actor.imgIndex].x, actorAnime[actor.imgIndex].y + (48 * actor.imgDirection), 48, 48, actor.x, actor.y, 48, 48);
+        ctx.drawImage(breathImg, breath.imgLie*192, breath.imgHang*192, 192, 192, breath.x, breath.y, 192, 192);
+
+        // ctx.fillStyle = 'rgba(255,255,255,'+alpha.toString()+')';
+        // ctx.fillRect(0,0,500,500);
+        
+        // alpha+=step;
     }
     setInterval(paint, 10);
     setInterval(function () {
@@ -81,8 +120,24 @@
     function move(movelift, dir, setDefault) {
         if (movelift == null) {
             actor.imgDirection = dir;
+            if (dir == Direction.Right&& actor.x >=432) {
+               
+                return;
+            }
+            if (dir == Direction.Left&& actor.x <= 0) {
+               
+                return;
+            }
+            if (dir == Direction.Down&&actor.y >= 432) {
+                return;
+            }
+            if (dir == Direction.Up&&actor.y <= 0) {
+                return;
+            }
+           
             moveData.isMoving = true;
             movelift = 48;
+           
         }
         if (0 < movelift && movelift <= 24) {
             actor.imgIndex = 2;
@@ -113,7 +168,7 @@
         movelift -= 1;
         setTimeout(function () {
             move(movelift, dir, setDefault);
-        }, 2);
+        }, 1);
     }
 </script>
 <script>
